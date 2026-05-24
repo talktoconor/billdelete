@@ -18,7 +18,7 @@ import {
 import { CTAButton } from "@/components/cta-button"
 
 export const metadata: Metadata = {
-  title: "Know Your Rights — Medical Billing Rights | BillFight",
+  title: "Know Your Rights — Medical Billing Rights | BillHero",
   description:
     "Understand your legal rights as a patient. Learn about itemized bills, charity care, the No Surprises Act, and more.",
 }
