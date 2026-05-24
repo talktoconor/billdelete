@@ -176,21 +176,21 @@ export default function PricingPage() {
       <section className="bg-[#FDF8F0] px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
           {/* Individual Products */}
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-6 pt-5 sm:grid-cols-2 lg:grid-cols-4">
             {products.map((product) => {
               const Icon = product.icon
               return (
                 <Card
                   key={product.name}
-                  className={`relative flex flex-col ${
+                  className={`relative flex flex-col overflow-visible ${
                     product.popular
                       ? "ring-2 ring-[#166534] shadow-lg"
                       : ""
                   }`}
                 >
                   {product.popular && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                      <Badge className="bg-[#D97706] text-white">
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 whitespace-nowrap">
+                      <Badge className="bg-[#D97706] text-white shadow-sm">
                         Most Popular
                       </Badge>
                     </div>
