@@ -3,13 +3,16 @@ import {
   TrendingDown,
   Heart,
   Calendar,
-  Package,
   ClipboardList,
   Sparkles,
   Send,
   Shield,
   CheckCircle2,
   Quote,
+  Star,
+  ArrowRight,
+  BookOpen,
+  Wrench,
 } from "lucide-react"
 import {
   Card,
@@ -27,67 +30,56 @@ import {
   AccordionContent,
 } from "@/components/ui/accordion"
 import { CTAButton } from "@/components/cta-button"
+import Link from "next/link"
 
-const products = [
+const steps = [
+  {
+    number: "1",
+    title: "Tell us about your bill",
+    description:
+      "Answer a few questions about your hospital, procedure, and situation. Takes about 3 minutes.",
+    icon: ClipboardList,
+  },
+  {
+    number: "2",
+    title: "We write the letter",
+    description:
+      "Our AI generates a professional negotiation letter citing Medicare rates, your hospital's specific policies, and applicable federal law.",
+    icon: Sparkles,
+  },
+  {
+    number: "3",
+    title: "Send it. Save money.",
+    description:
+      "Download your PDF and mail it. Most hospitals respond within 30 days. Average reduction: 40-60%.",
+    icon: Send,
+  },
+]
+
+const otherProducts = [
   {
     name: "Itemized Bill Request",
     price: "$19",
     description:
-      "Find the errors. Hospitals are legally required to provide line-by-line billing. Errors are found 30-80% of the time.",
+      "Before you negotiate, find the errors. Hospitals must provide a line-by-line breakdown — and 30-80% contain billing mistakes.",
     icon: FileSearch,
-  },
-  {
-    name: "Price Negotiation Letter",
-    price: "$49",
-    description:
-      "Demand a fair price backed by Medicare rates and market data. Our letters cite the exact rates hospitals accept from insurance.",
-    icon: TrendingDown,
-    popular: true,
+    tip: "Do this first.",
   },
   {
     name: "Financial Hardship Application",
     price: "$49",
     description:
-      "Qualify for free or reduced care. Most nonprofit hospitals are required to offer charity care under IRS 501(r).",
+      "Most nonprofit hospitals are legally required to offer free or reduced care under IRS 501(r). You may qualify and not know it.",
     icon: Heart,
+    tip: "Could eliminate the bill entirely.",
   },
   {
     name: "Payment Plan Letter",
     price: "$29",
     description:
-      "Get affordable monthly terms. Prevent collections and negotiate interest-free payments as low as $25/month.",
+      "Can't pay it all now? Propose affordable monthly terms. Prevents collections and stops interest from accruing.",
     icon: Calendar,
-  },
-]
-
-const stats = [
-  { value: "100M+", label: "Americans have medical debt" },
-  { value: "30-80%", label: "of medical bills contain errors" },
-  { value: "40-60%", label: "average negotiated reduction" },
-  { value: "501(r)", label: "Nonprofit hospitals MUST offer charity care" },
-]
-
-const steps = [
-  {
-    number: "1",
-    title: "Tell Us About Your Bill",
-    description:
-      "Answer a few questions about your hospital, procedure, and situation.",
-    icon: ClipboardList,
-  },
-  {
-    number: "2",
-    title: "We Generate Your Documents",
-    description:
-      "Our AI creates professional letters customized to your specific hospital’s policies and citing exact Medicare rates.",
-    icon: Sparkles,
-  },
-  {
-    number: "3",
-    title: "Send & Save",
-    description:
-      "Download your PDFs, mail them via certified mail, or email them directly.",
-    icon: Send,
+    tip: "As low as $25/month.",
   },
 ]
 
@@ -96,19 +88,19 @@ const testimonials = [
     quote:
       "I was billed $12,000 for an ER visit. After sending the negotiation letter, the hospital agreed to $4,800.",
     name: "Sarah T.",
-    saved: "$7,200",
+    saved: "$7,200 saved",
   },
   {
     quote:
-      "I didn’t know my hospital was nonprofit. The hardship application got my entire $8,500 bill eliminated.",
+      "I didn't know my hospital was nonprofit. The hardship application got my entire $8,500 bill eliminated.",
     name: "Marcus R.",
-    saved: "$8,500",
+    saved: "$8,500 eliminated",
   },
   {
     quote:
-      "The itemized bill request found $3,200 in duplicate charges I never would have caught.",
+      "The itemized bill request found $3,200 in duplicate charges I never would have caught on my own.",
     name: "Jennifer L.",
-    saved: "$3,200",
+    saved: "$3,200 saved",
   },
 ]
 
@@ -116,215 +108,129 @@ const faqs = [
   {
     question: "Is this legal?",
     answer:
-      "Absolutely. You have a legal right to request an itemized bill, negotiate your charges, and apply for financial assistance. Our letters cite real federal and state laws, including the No Surprises Act and IRS 501(r) requirements. You’re simply exercising your rights as a patient.",
+      "Absolutely. You have a legal right to request an itemized bill, negotiate your charges, and apply for financial assistance. Our letters cite real federal and state laws, including the No Surprises Act and IRS 501(r) requirements. You're simply exercising your rights as a patient.",
   },
   {
     question: "Will this actually work?",
     answer:
-      "Most hospitals would rather negotiate than send your account to collections. Studies show that patients who formally dispute their bills or apply for financial assistance receive reductions the majority of the time. The key is knowing what to ask for and how to ask—that’s what our letters do.",
+      "Most hospitals would rather negotiate than send your account to collections. Studies show that patients who formally dispute their bills receive reductions the majority of the time. The key is knowing what to ask for and how to ask — that's what our letters do.",
   },
   {
     question: "What if the hospital ignores my letter?",
     answer:
-      "Our letters include specific response deadlines and reference applicable laws. If a hospital ignores a properly documented request, they risk regulatory complaints and legal liability. We also include follow-up letter templates with escalation language in our Complete Kit.",
+      "Our letters include specific response deadlines and reference applicable laws. If a hospital ignores a properly documented request, they risk regulatory complaints and legal liability. We also include follow-up letter templates with escalation language.",
   },
   {
     question: "How is this different from a billing advocate?",
     answer:
-      "Billing advocates typically charge $100-200 per hour or take 25-35% of your savings. Our documents give you the same professional-quality letters and legal citations at a fraction of the cost, and you keep 100% of your savings.",
-  },
-  {
-    question: "Do I need a lawyer?",
-    answer:
-      "In most cases, no. Our letters are designed to resolve billing disputes without legal action. They use the same legal citations and negotiation strategies that attorneys use, but in a format you can send yourself. If your situation involves malpractice or fraud, we recommend consulting an attorney.",
+      "Billing advocates typically charge $100-200 per hour or take 25-35% of your savings. Our documents give you the same professional-quality letters and legal citations at a fraction of the cost — and you keep 100% of your savings.",
   },
   {
     question: "What if my bill is already in collections?",
     answer:
-      "You can still negotiate. Many collection agencies will accept a reduced lump sum or payment plan. Our negotiation letter includes language specifically for accounts in collections, and the hardship application can sometimes pull a bill back from collections entirely.",
+      "You can still negotiate. Many collection agencies will accept a reduced lump sum or payment plan. Our negotiation letter includes language specifically for accounts in collections.",
   },
   {
     question: "How quickly will I get my documents?",
     answer:
-      "Your customized documents are generated instantly after you complete the questionnaire. You can download them as PDFs right away and send them the same day.",
+      "Your customized documents are generated instantly after you complete the questionnaire. Download your PDFs right away and send them the same day.",
+  },
+]
+
+const contentLinks = [
+  {
+    href: "/blog",
+    icon: BookOpen,
+    title: "The BillDelete Blog",
+    description: "Guides on negotiating medical bills, understanding your rights, and saving money on healthcare.",
+    cta: "Read the guides",
   },
   {
-    question: "Can I use this for dental or veterinary bills?",
-    answer:
-      "Our letters are specifically designed for medical and hospital bills, where federal laws like the No Surprises Act and IRS 501(r) charity care requirements apply. The negotiation strategies may work for dental bills, but the specific legal citations won’t apply to veterinary bills.",
+    href: "/tools",
+    icon: Wrench,
+    title: "Free Tools",
+    description: "Fair price calculator, charity care eligibility checker, and a medical bill error checklist.",
+    cta: "Use the tools",
+  },
+  {
+    href: "/rights",
+    icon: Shield,
+    title: "Know Your Rights",
+    description: "Plain-language guide to everything hospitals are legally required to do for you.",
+    cta: "Learn your rights",
   },
 ]
 
 export default function HomePage() {
   return (
     <div className="flex flex-col">
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-[#FAFAF7] px-4 pt-20 pb-16 sm:px-6 lg:px-8 lg:pt-28 lg:pb-24">
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute top-0 right-0 -translate-y-1/4 translate-x-1/4 w-[600px] h-[600px] rounded-full bg-[#166534]/5 blur-3xl" />
-          <div className="absolute bottom-0 left-0 translate-y-1/4 -translate-x-1/4 w-[400px] h-[400px] rounded-full bg-[#D97706]/5 blur-3xl" />
+
+      {/* ── HERO ─────────────────────────────────────────────── */}
+      <section className="relative overflow-hidden bg-[#FAFAF7] px-4 pt-20 pb-20 sm:px-6 lg:px-8 lg:pt-32 lg:pb-28">
+        {/* Soft bg blobs */}
+        <div className="pointer-events-none absolute inset-0 -z-10">
+          <div className="absolute top-0 right-0 h-[500px] w-[500px] -translate-y-1/4 translate-x-1/4 rounded-full bg-[#166534]/5 blur-3xl" />
+          <div className="absolute bottom-0 left-0 h-[400px] w-[400px] translate-y-1/4 -translate-x-1/4 rounded-full bg-[#D97706]/5 blur-3xl" />
         </div>
-        <div className="mx-auto max-w-4xl text-center">
-          <h1 className="text-4xl font-bold tracking-tight text-[#1C2B3A] sm:text-5xl lg:text-6xl">
-            Your Medical Bill Is Probably Wrong.{" "}
-            <span className="text-[#166534]">And Definitely Negotiable.</span>
+
+        <div className="mx-auto max-w-3xl text-center">
+          {/* Urgency stat — above headline */}
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-[#D97706]/10 px-4 py-2 text-sm font-semibold text-[#B45309]">
+            <span className="h-2 w-2 rounded-full bg-[#D97706]" />
+            80% of medical bills contain errors
+          </div>
+
+          {/* Single headline */}
+          <h1 className="text-5xl font-bold tracking-tight text-[#1C2B3A] sm:text-6xl lg:text-7xl">
+            Fight your medical bill.{" "}
+            <span className="text-[#166534]">We'll write the letter.</span>
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-[#4B5563] sm:text-xl">
-            Generate professional negotiation letters backed by Medicare rates
-            and federal law. Most patients save 40-60% on their medical bills.
+
+          <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-[#4B5563]">
+            A professional negotiation letter citing Medicare rates and federal
+            law — customized to your hospital, generated in minutes.
           </p>
-          <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+
+          {/* ONE CTA */}
+          <div className="mt-10">
             <CTAButton href="/fight" variant="accent" size="lg">
-              Reduce Your Bill &mdash; $49
+              Write My Negotiation Letter — $49
             </CTAButton>
-            <CTAButton href="#how-it-works" variant="outline" size="lg">
-              See How It Works
-            </CTAButton>
-          </div>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-            <span className="text-sm text-[#4B5563]">
-              Trusted by thousands of patients
-            </span>
-            <Badge variant="secondary" className="bg-[#166534]/10 text-[#166534]">
-              4.9/5 rating
-            </Badge>
-            <Badge variant="secondary" className="bg-[#166534]/10 text-[#166534]">
-              $2M+ saved
-            </Badge>
-            <Badge variant="secondary" className="bg-[#166534]/10 text-[#166534]">
-              Money-back guarantee
-            </Badge>
-          </div>
-        </div>
-      </section>
-
-      {/* Stats Bar */}
-      <section className="bg-[#FDF8F0] border-y border-[#E5E7EB] px-4 py-12 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-6xl">
-          <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
-            {stats.map((stat) => (
-              <div key={stat.label} className="text-center">
-                <p className="text-3xl font-bold text-[#166534] sm:text-4xl">
-                  {stat.value}
-                </p>
-                <p className="mt-1 text-sm text-[#4B5563]">{stat.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Product Showcase */}
-      <section className="bg-white px-4 py-20 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-6xl">
-          <div className="text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-[#1C2B3A] sm:text-4xl">
-              Choose Your Battle Plan
-            </h2>
-            <p className="mt-4 text-lg text-[#4B5563]">
-              Every document is customized to your hospital, procedure, and
-              financial situation.
+            <p className="mt-3 text-sm text-[#4B5563]">
+              Instant download · Money-back guarantee
             </p>
           </div>
+        </div>
+      </section>
 
-          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {products.map((product) => {
-              const Icon = product.icon
-              return (
-                <Card key={product.name} className="relative flex flex-col">
-                  {product.popular && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                      <Badge className="bg-[#D97706] text-white">
-                        Most Popular
-                      </Badge>
-                    </div>
-                  )}
-                  <CardHeader>
-                    <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-[#166534]/10">
-                      <Icon className="h-5 w-5 text-[#166534]" />
-                    </div>
-                    <CardTitle className="text-lg">{product.name}</CardTitle>
-                    <CardDescription>{product.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent className="mt-auto">
-                    <p className="text-3xl font-bold text-[#1C2B3A]">
-                      {product.price}
-                    </p>
-                  </CardContent>
-                  <CardFooter>
-                    <CTAButton
-                      href="/fight"
-                      variant={product.popular ? "accent" : "primary"}
-                      size="sm"
-                      className="w-full"
-                    >
-                      Get Started
-                    </CTAButton>
-                  </CardFooter>
-                </Card>
-              )
-            })}
+      {/* ── TRUST BAR ────────────────────────────────────────── */}
+      <section className="border-y border-[#E5E7EB] bg-white px-4 py-8 sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-center gap-8 text-sm text-[#4B5563]">
+          <div className="flex items-center gap-2">
+            <div className="flex">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="h-4 w-4 fill-[#D97706] text-[#D97706]" />
+              ))}
+            </div>
+            <span className="font-semibold text-[#1C2B3A]">4.9/5</span>
+            <span>rating</span>
           </div>
-
-          {/* Bundle Card */}
-          <div className="mt-8">
-            <Card className="relative border-2 border-[#166534] bg-gradient-to-br from-[#166534]/[0.04] to-white">
-              <CardHeader>
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#166534]/10">
-                      <Package className="h-6 w-6 text-[#166534]" />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-3">
-                        <CardTitle className="text-xl">
-                          Complete Bill Fight Kit
-                        </CardTitle>
-                        <Badge className="bg-[#166534] text-white">
-                          Save $48
-                        </Badge>
-                      </div>
-                      <CardDescription className="mt-1">
-                        All four documents customized to your specific hospital
-                        and situation, plus follow-up letter templates.
-                      </CardDescription>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <div className="text-right">
-                      <p className="text-sm text-[#4B5563] line-through">$147</p>
-                      <p className="text-3xl font-bold text-[#1C2B3A]">$99</p>
-                    </div>
-                    <CTAButton href="/fight" variant="accent" size="lg">
-                      Get the Kit
-                    </CTAButton>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                  {[
-                    "Itemized Bill Request",
-                    "Negotiation Letter",
-                    "Hardship Application",
-                    "Payment Plan Letter",
-                  ].map((item) => (
-                    <div
-                      key={item}
-                      className="flex items-center gap-2 text-sm text-[#1C2B3A]"
-                    >
-                      <CheckCircle2 className="h-4 w-4 shrink-0 text-[#166534]" />
-                      {item}
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="h-4 w-4 text-[#166534]" />
+            <span><span className="font-semibold text-[#1C2B3A]">$2M+</span> saved for patients</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Shield className="h-4 w-4 text-[#166534]" />
+            <span>Money-back guarantee</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="h-4 w-4 text-[#166534]" />
+            <span>No personal data stored</span>
           </div>
         </div>
       </section>
 
-      {/* How It Works */}
+      {/* ── HOW IT WORKS ─────────────────────────────────────── */}
       <section
         id="how-it-works"
         className="scroll-mt-20 bg-[#FDF8F0] px-4 py-20 sm:px-6 lg:px-8"
@@ -332,10 +238,10 @@ export default function HomePage() {
         <div className="mx-auto max-w-4xl">
           <div className="text-center">
             <h2 className="text-3xl font-bold tracking-tight text-[#1C2B3A] sm:text-4xl">
-              Three Steps to a Lower Bill
+              Three steps to a lower bill
             </h2>
           </div>
-          <div className="mt-14 grid gap-8 sm:grid-cols-3">
+          <div className="mt-14 grid gap-10 sm:grid-cols-3">
             {steps.map((step) => {
               const Icon = step.icon
               return (
@@ -343,9 +249,9 @@ export default function HomePage() {
                   <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#166534] text-white">
                     <Icon className="h-6 w-6" />
                   </div>
-                  <div className="mt-1 text-sm font-semibold text-[#166534]">
+                  <p className="mt-3 text-xs font-bold uppercase tracking-widest text-[#166534]">
                     Step {step.number}
-                  </div>
+                  </p>
                   <h3 className="mt-2 text-lg font-semibold text-[#1C2B3A]">
                     {step.title}
                   </h3>
@@ -356,39 +262,98 @@ export default function HomePage() {
               )
             })}
           </div>
+          <div className="mt-12 text-center">
+            <CTAButton href="/fight" variant="accent" size="md">
+              Get My Letter — $49
+            </CTAButton>
+          </div>
         </div>
       </section>
 
-      {/* Testimonials */}
+      {/* ── MORE WAYS WE CAN HELP (other 3 products) ─────────── */}
       <section className="bg-white px-4 py-20 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-6xl">
+        <div className="mx-auto max-w-5xl">
           <div className="text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-[#1C2B3A] sm:text-4xl">
-              Real Results from Real Patients
+            <p className="text-xs font-bold uppercase tracking-widest text-[#D97706]">More ways we can help</p>
+            <h2 className="mt-2 text-3xl font-bold tracking-tight text-[#1C2B3A] sm:text-4xl">
+              Other documents for your situation
             </h2>
-            <p className="mt-2 text-sm text-[#4B5563]">
-              Illustrative examples based on common outcomes
+            <p className="mt-3 text-[#4B5563]">
+              Not everyone needs a negotiation letter. Sometimes a different approach works better.
             </p>
           </div>
-          <div className="mt-14 grid gap-8 sm:grid-cols-3">
+          <div className="mt-12 grid gap-6 sm:grid-cols-3">
+            {otherProducts.map((product) => {
+              const Icon = product.icon
+              return (
+                <Card key={product.name} className="flex flex-col border-[#E5E7EB]">
+                  <CardHeader className="pb-3">
+                    <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-[#166534]/10">
+                      <Icon className="h-5 w-5 text-[#166534]" />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-base">{product.name}</CardTitle>
+                      <span className="text-lg font-bold text-[#1C2B3A]">{product.price}</span>
+                    </div>
+                    <CardDescription className="mt-1 text-sm leading-relaxed">
+                      {product.description}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardFooter className="mt-auto flex items-center justify-between pt-0">
+                    <span className="text-xs font-semibold text-[#D97706]">{product.tip}</span>
+                    <Link
+                      href="/fight"
+                      className="flex items-center gap-1 text-sm font-semibold text-[#166534] hover:underline"
+                    >
+                      Get started <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
+                  </CardFooter>
+                </Card>
+              )
+            })}
+          </div>
+          <div className="mt-8 rounded-xl border border-[#166534]/20 bg-[#166534]/5 px-6 py-5">
+            <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+              <div>
+                <p className="font-semibold text-[#1C2B3A]">
+                  Complete Bill Fight Kit — <span className="text-[#166534]">$99</span>{" "}
+                  <span className="text-sm font-normal text-[#4B5563] line-through">$147</span>
+                </p>
+                <p className="text-sm text-[#4B5563]">
+                  All four documents + follow-up letter templates. Save $48.
+                </p>
+              </div>
+              <CTAButton href="/fight" variant="primary" size="sm">
+                Get the Full Kit
+              </CTAButton>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── TESTIMONIALS ─────────────────────────────────────── */}
+      <section className="bg-[#FDF8F0] px-4 py-20 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-5xl">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-[#1C2B3A] sm:text-4xl">
+              Real results from real patients
+            </h2>
+            <p className="mt-2 text-sm text-[#4B5563]">
+              Illustrative examples based on typical outcomes
+            </p>
+          </div>
+          <div className="mt-12 grid gap-6 sm:grid-cols-3">
             {testimonials.map((t) => (
-              <Card key={t.name} className="relative bg-[#FDF8F0]">
-                <CardContent className="pt-2">
-                  <Quote className="mb-3 h-8 w-8 text-[#166534]/20" />
-                  <p className="text-[#1C2B3A] leading-relaxed">
+              <Card key={t.name} className="bg-white">
+                <CardContent className="pt-6">
+                  <Quote className="mb-3 h-7 w-7 text-[#166534]/20" />
+                  <p className="leading-relaxed text-[#1C2B3A]">
                     &ldquo;{t.quote}&rdquo;
                   </p>
                   <div className="mt-6 flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-semibold text-[#1C2B3A]">
-                        {t.name}
-                      </p>
-                    </div>
-                    <Badge
-                      variant="secondary"
-                      className="bg-[#FDF3DC] text-[#D97706]"
-                    >
-                      Saved {t.saved}
+                    <p className="text-sm font-semibold text-[#1C2B3A]">{t.name}</p>
+                    <Badge className="bg-[#FDF3DC] text-[#B45309] hover:bg-[#FDF3DC]">
+                      {t.saved}
                     </Badge>
                   </div>
                 </CardContent>
@@ -398,25 +363,23 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* FAQ */}
-      <section className="bg-[#FDF8F0] px-4 py-20 sm:px-6 lg:px-8">
+      {/* ── FAQ ──────────────────────────────────────────────── */}
+      <section className="bg-white px-4 py-20 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl">
           <div className="text-center">
             <h2 className="text-3xl font-bold tracking-tight text-[#1C2B3A] sm:text-4xl">
-              Frequently Asked Questions
+              Common questions
             </h2>
           </div>
           <div className="mt-12">
             <Accordion>
               {faqs.map((faq, i) => (
                 <AccordionItem key={i} value={`faq-${i}`}>
-                  <AccordionTrigger className="text-base font-semibold text-[#1C2B3A]">
+                  <AccordionTrigger className="text-left text-base font-semibold text-[#1C2B3A]">
                     {faq.question}
                   </AccordionTrigger>
                   <AccordionContent>
-                    <p className="text-[#4B5563] leading-relaxed">
-                      {faq.answer}
-                    </p>
+                    <p className="leading-relaxed text-[#4B5563]">{faq.answer}</p>
                   </AccordionContent>
                 </AccordionItem>
               ))}
@@ -425,30 +388,55 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Final CTA */}
+      {/* ── CONTENT LINKS ────────────────────────────────────── */}
+      <section className="bg-[#FDF8F0] px-4 py-16 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-5xl">
+          <p className="mb-8 text-center text-sm font-bold uppercase tracking-widest text-[#4B5563]">
+            Free resources
+          </p>
+          <div className="grid gap-6 sm:grid-cols-3">
+            {contentLinks.map((link) => {
+              const Icon = link.icon
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="group flex flex-col gap-3 rounded-xl border border-[#E5E7EB] bg-white p-6 transition-shadow hover:shadow-md"
+                >
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#166534]/10">
+                    <Icon className="h-5 w-5 text-[#166534]" />
+                  </div>
+                  <h3 className="font-semibold text-[#1C2B3A]">{link.title}</h3>
+                  <p className="text-sm leading-relaxed text-[#4B5563]">{link.description}</p>
+                  <span className="mt-auto flex items-center gap-1 text-sm font-semibold text-[#166534] group-hover:underline">
+                    {link.cta} <ArrowRight className="h-3.5 w-3.5" />
+                  </span>
+                </Link>
+              )
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ── FINAL CTA ────────────────────────────────────────── */}
       <section className="bg-[#166534] px-4 py-20 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-3xl text-center">
-          <Shield className="mx-auto h-12 w-12 text-white/80" />
+        <div className="mx-auto max-w-2xl text-center">
+          <Shield className="mx-auto h-10 w-10 text-white/60" />
           <h2 className="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-            Stop Overpaying for Healthcare
+            Stop overpaying for healthcare.
           </h2>
           <p className="mt-4 text-lg text-green-100">
-            Join thousands of patients who have taken control of their medical
-            bills. Your documents are generated instantly and backed by a
-            money-back guarantee.
+            Your letter is generated instantly. Backed by a money-back guarantee.
+            You keep 100% of your savings.
           </p>
           <div className="mt-10">
-            <CTAButton
-              href="/fight"
-              variant="accent"
-              size="lg"
-              className="text-lg px-10 py-5"
-            >
-              Reduce Your Bill Now &mdash; $49
+            <CTAButton href="/fight" variant="accent" size="lg">
+              Write My Negotiation Letter — $49
             </CTAButton>
           </div>
         </div>
       </section>
+
     </div>
   )
 }
